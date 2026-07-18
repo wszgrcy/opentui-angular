@@ -1,0 +1,13 @@
+<box [style]="{ flexDirection: 'column', padding: 1 }">
+  <text content="flushSync Demo" [style]="{ fg: '#FFFF00', attributes: 1 }" />
+  <text content="'a' = batched | 's' = flushSync | 'q' = quit" [style]="{ fg: '#666666' }" />
+  <text
+    content="a={{ a() }} b={{ b() }} c={{ c() }}  (renders: {{ renderCount }})"
+    [style]="{ fg: '#00FF00', marginTop: 1 }"
+  />
+  <box title="Log" [style]="{ border: true, marginTop: 1, flexDirection: 'column', width: 55 }">
+    @for (entry of log(); track $index) {
+      <text [content]="entry" [style]="{ fg: entry.startsWith('flush') ? '#00FFFF' : '#FF8800' }" />
+    }
+  </box>
+</box>

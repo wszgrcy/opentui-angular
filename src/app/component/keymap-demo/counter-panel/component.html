@@ -1,0 +1,29 @@
+<box
+  #targetRef
+  [id]="'keymap-demo-' + id()"
+  [border]="true"
+  borderStyle="single"
+  [focusable]="true"
+  [borderColor]="palette.border"
+  [focusedBorderColor]="color()"
+  [backgroundColor]="palette.panel"
+  [paddingX]="1"
+  flexDirection="column"
+  [flexGrow]="1"
+  title=" {{ label() }} "
+  titleAlignment="left"
+>
+  <text [height]="1">
+    <span [style]="{ fg: palette.textDim }">Count: </span>
+    <span [style]="{ fg: color(), attributes: TextAttributes.BOLD }">{{ count() }}</span>
+  </text>
+  <text [height]="1">
+    <app-key-label>j</app-key-label>
+    <span [style]="{ fg: palette.textDim }"> +{{ step() }} </span>
+    <app-key-label>k</app-key-label>
+    <span [style]="{ fg: palette.textDim }"> -{{ step() }}</span>
+    <span [style]="{ fg: palette.separator }"> | </span>
+    <app-key-label>enter</app-key-label>
+    <span [style]="{ fg: palette.textDim }"> save {{ label().toLowerCase() }}</span>
+  </text>
+</box>

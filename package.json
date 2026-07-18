@@ -1,0 +1,44 @@
+{
+  "name": "ngx-opentui",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng build --configuration development && chcp 65001 && node --experimental-ffi --enable-source-maps --inspect ./dist/main.js",
+    "build": "ng build opentui-lib",
+    "watch": "ng build --watch --configuration development",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-ffi\" node  node_modules/@angular/cli/bin/ng.js test opentui-lib",
+    "coverage": "npm test -- --coverage --watch false",
+    "lint": "eslint --fix ./projects && prettier ./projects --write && eslint --fix ./src && prettier ./src --write"
+  },
+  "private": true,
+  "packageManager": "npm@11.12.1",
+  "dependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/compiler": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/router": "^22.0.0",
+    "@opentui/core": "^0.4.3",
+    "@opentui/keymap": "^0.4.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.0.5",
+    "@angular/cli": "^22.0.5",
+    "@angular/compiler-cli": "^22.0.0",
+    "@types/node": "26.1.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "cross-env": "^10.1.0",
+    "jsdom": "^28.0.0",
+    "ng-packagr": "^22.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2",
+    "vitest": "^4.0.8",
+    "@eslint/js": "^9.32.0",
+    "eslint": "^9.32.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "typescript-eslint": "^8.19.1"
+  }
+}

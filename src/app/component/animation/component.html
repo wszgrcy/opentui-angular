@@ -1,0 +1,30 @@
+<box
+  title="System Monitor"
+  [style]="{
+    margin: 1,
+    padding: 1,
+    border: true,
+    marginLeft: 2,
+    marginRight: 2,
+    borderStyle: 'single',
+    borderColor: '#4a4a4a',
+  }"
+>
+  @for (stat of statsMap; track stat.key) {
+    <box>
+      <box flexDirection="row" justifyContent="space-between">
+        <text>{{ stat.name }}</text>
+        <text [attributes]="TextAttributes.DIM">{{ round(animatedSystem()[stat.key]) + '%' }}</text>
+      </box>
+      <box [style]="{ backgroundColor: '#333333' }">
+        <box
+          [style]="{
+            width: `${animatedSystem()[stat.key]}%`,
+            height: 1,
+            backgroundColor: stat.color,
+          }"
+        />
+      </box>
+    </box>
+  }
+</box>

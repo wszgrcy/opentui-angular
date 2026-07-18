@@ -1,0 +1,21 @@
+<box flexDirection="column">
+  <text [attributes]="1" content="Box Examples" />
+  <box [border]="true"><text content="1. Standard Box" /></box>
+  <box [border]="true" title="Title"><text content="2. Box with Title" /></box>
+  <box [border]="true" title="Colorful title" titleColor="#ff0000"
+    ><text content="3 Box with Title"
+  /></box>
+  <box [border]="true" borderColor="transparent" title="Colorful title" titleColor="#ff0000"
+    ><text content="4 Box with NO borders but visible colorful title"
+  /></box>
+  <box [border]="true" backgroundColor="blue"><text content="5. Box with Background Color" /></box>
+  <box [border]="true" [padding]="1"><text content="6. Box with Padding" /></box>
+  <box [border]="true" [margin]="1"><text content="7. Box with Margin" /></box>
+  <box [border]="true" alignItems="center"><text content="8. Centered Text" /></box>
+  <box [border]="true" justifyContent="center" [height]="5"
+    ><text content="9. Justified Center"
+  /></box>
+  <box [border]="true" title="Nested Boxes" backgroundColor="red">
+    <box [border]="true" backgroundColor="blue"><text content="10. Nested Box" /></box>
+  </box>
+</box>

@@ -1,0 +1,56 @@
+<ng-template #content>
+  <ng-content></ng-content>
+  @let template = contentChildTemplate();
+  @if (template) {
+    <ng-container *ngTemplateOutlet="template"></ng-container>
+  }
+</ng-template>
+@let type = renderType();
+<ng-container [refDetach]="type" [list]="cmpRefList()"></ng-container>
+
+@switch (type) {
+  @case (0) {
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  }
+  @case (1) {
+    @let winner = entries()[0];
+    @if (!winner) {
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    } @else {
+      @let ref = renderEntry | pure: winner;
+      @if (ref) {
+        <ng-container [componentRef]="ref" #cmpRef="componentRef"></ng-container>
+      } @else {
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      }
+    }
+  }
+  @case (2) {
+    @if (entries().length === 1) {
+      @let ref = renderEntry | pure: entries()[0];
+      @if (ref) {
+        <ng-container [componentRef]="ref" #cmpRef="componentRef"></ng-container>
+      } @else {
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      }
+    } @else {
+      @let refList = entryList | pure: entries();
+
+      @for (item of refList; track $index) {
+        <ng-container [componentRef]="item" #cmpRef="componentRef"></ng-container>
+      } @empty {
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      }
+    }
+  }
+  @case (3) {
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+
+    @for (item of entries(); track $index) {
+      @let resolved = renderEntry | pure: item;
+      @if (resolved) {
+        <ng-container [componentRef]="resolved" #cmpRef="componentRef"></ng-container>
+      }
+    }
+  }
+}

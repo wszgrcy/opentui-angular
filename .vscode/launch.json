@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch & Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "address": "127.0.0.1",
+            "restart": true,
+            "preLaunchTask": "test"
+        },
+        {
+            "name": "Start",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "address": "127.0.0.1",
+            "restart": true,
+            "preLaunchTask": "start",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "*": "${workspaceFolder}/*",
+            }
+        }
+    ]
+}

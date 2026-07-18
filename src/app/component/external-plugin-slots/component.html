@@ -1,0 +1,54 @@
+<box width="100%" height="100%" flexDirection="column" [padding]="1" backgroundColor="#020617">
+  <box
+    [height]="5"
+    width="100%"
+    [border]="true"
+    borderStyle="single"
+    borderColor="#334155"
+    alignItems="center"
+    flexDirection="row"
+    [paddingLeft]="1"
+    [marginBottom]="1"
+  >
+    <ngx-slot
+      [registry]="registry()!"
+      name="statusbar"
+      [mode]="statusbarMode()"
+      [slotProps]="{ label: STATUSBAR_LABEL }"
+    >
+      <text fg="#94a3b8">Fallback statusbar content</text>
+    </ngx-slot>
+  </box>
+
+  <box width="100%" [flexGrow]="1" flexDirection="row">
+    <box
+      [width]="44"
+      [border]="true"
+      borderStyle="single"
+      borderColor="#334155"
+      flexDirection="column"
+      [padding]="1"
+      [marginRight]="1"
+    >
+      <ngx-slot
+        [registry]="registry()!"
+        name="sidebar"
+        mode="replace"
+        [slotProps]="{ section: SIDEBAR_SECTION }"
+      >
+        <text fg="#94a3b8">No external sidebar plugin loaded</text>
+      </ngx-slot>
+    </box>
+
+    <box
+      [flexGrow]="1"
+      [border]="true"
+      borderStyle="single"
+      borderColor="#334155"
+      flexDirection="column"
+      [padding]="1"
+    >
+      <text fg="#e2e8f0" [content]="info" />
+    </box>
+  </box>
+</box>

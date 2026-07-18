@@ -1,0 +1,42 @@
+@if (selected() !== -1) {
+  <ng-container *ngComponentOutlet="selectedExample().component"></ng-container>
+} @else {
+  <box [style]="{ height: terminalDimensions().height, backgroundColor: '#001122', padding: 1 }">
+    <box alignItems="center">
+      <ascii-font [style]="{ font: 'tiny' }" text="OPENTUI ANGULAR EXAMPLES" />
+    </box>
+    <box
+      title="Examples"
+      [style]="{
+        border: true,
+        flexGrow: 1,
+        marginTop: 1,
+        borderStyle: 'single',
+        titleAlignment: 'center',
+        focusedBorderColor: '#00AAFF',
+      }"
+    >
+      <select
+        [focused]="true"
+        [options]="exampleOptions()"
+        (onSelect)="onSelectExample($event)"
+        [style]="{
+          height: '100%',
+          backgroundColor: 'transparent',
+          focusedBackgroundColor: 'transparent',
+          selectedBackgroundColor: '#334455',
+          selectedTextColor: '#FFFF00',
+          descriptionColor: '#888888',
+        }"
+        [showScrollIndicator]="true"
+        [wrapSelection]="true"
+        fastScrollStep="5"
+      ></select>
+    </box>
+    <time-to-first-draw />
+    <text [style]="{ fg: '#AAAAAA', marginTop: 1, marginLeft: 1, marginRight: 1 }">
+      Use up/down or j/k to navigate, Shift+up/down or Shift+j/k for fast scroll, Enter to run,
+      Escape to return, ` to toggle console, ctrl+c to quit
+    </text>
+  </box>
+}

@@ -1,0 +1,22 @@
+<scrollbox
+  [focused]="true"
+  [style]="{
+    rootOptions: { backgroundColor: '#24283b' },
+    wrapperOptions: { backgroundColor: '#1f2335' },
+    viewportOptions: { backgroundColor: '#1a1b26' },
+    contentOptions: { backgroundColor: '#16161e' },
+    scrollbarOptions: {
+      showArrows: true,
+      trackOptions: { foregroundColor: '#7aa2f7', backgroundColor: '#414868' },
+    },
+  }"
+>
+  @for (box of boxItems; track $index) {
+    <box [style]="{ width: '100%', padding: 2, marginBottom: 2, backgroundColor: box.bg }">
+      <text [style]="{ marginBottom: 1 }" [content]="'Box ' + ($index + 1)" />
+      @for (txt of box.lines; track $index) {
+        <text [style]="{ marginBottom: 0 }" [content]="txt" />
+      }
+    </box>
+  }
+</scrollbox>

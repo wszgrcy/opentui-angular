@@ -1,0 +1,73 @@
+<box [style]="{ padding: 1, backgroundColor: theme().backgroundColor, zIndex: 10 }">
+  <box
+    title="{{ 'Diff Demo - ' + themeName() }}"
+    titleAlignment="center"
+    [style]="{
+      height: 3,
+      border: true,
+      borderStyle: 'double',
+      borderColor: theme().borderColor,
+      backgroundColor: theme().backgroundColor,
+    }"
+  >
+    <text content="Ctrl+C to exit | Press ? for keybindings" [style]="{ fg: '#888888' }" />
+  </box>
+
+  <diff
+    [diff]="exampleDiff"
+    [view]="view()"
+    filetype="typescript"
+    [syntaxStyle]="syntaxStyle()"
+    [showLineNumbers]="showLineNumbers()"
+    [wrapMode]="wrapMode()"
+    [addedBg]="theme().addedBg"
+    [removedBg]="theme().removedBg"
+    [contextBg]="theme().contextBg"
+    [addedSignColor]="theme().addedSignColor"
+    [removedSignColor]="theme().removedSignColor"
+    [lineNumberFg]="theme().lineNumberFg"
+    [lineNumberBg]="theme().lineNumberBg"
+    [addedLineNumberBg]="theme().addedLineNumberBg"
+    [removedLineNumberBg]="theme().removedLineNumberBg"
+    [selectionBg]="theme().selectionBg"
+    [selectionFg]="theme().selectionFg"
+    [style]="{ flexGrow: 1, flexShrink: 1 }"
+  />
+
+  @if (showHelp()) {
+    <box
+      [style]="{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        width: 60,
+        height: 14,
+        marginLeft: -30,
+        marginTop: -7,
+        border: true,
+        borderStyle: 'double',
+        borderColor: theme().borderColor,
+        backgroundColor: theme().backgroundColor,
+        padding: 2,
+        zIndex: 100,
+      }"
+      title="Keybindings"
+      titleAlignment="center"
+    >
+      <text
+        content="View Controls:
+  V : Toggle view mode (Unified/Split)
+  L : Toggle line numbers
+  W : Toggle wrap mode (None/Word)
+
+Theme & Display:
+  T : Cycle through themes
+
+Other:
+  ? : Toggle this help screen
+  Ctrl+C : Exit"
+        [style]="{ fg: '#E6EDF3' }"
+      />
+    </box>
+  }
+</box>

@@ -1,0 +1,38 @@
+<box [style]="{ flexDirection: 'column', padding: 1 }">
+  <box [style]="{ border: true, borderStyle: 'single', borderColor: '#666' }" title="Hooks Demo">
+    <box [style]="{ flexDirection: 'column', padding: 1 }">
+      <text fg="#FFFF00">Angular Hooks Validation</text>
+      <text fg="#888">
+        {{ '\n' }}
+        Terminal: {{ dimensions().width }}x{{ dimensions().height }} | Focus:
+        {{ focused() ? 'YES' : 'NO' }}
+        {{ '\n\n' }}
+        Actions: {{ '\n' }}- Type any key (useKeyboard) {{ '\n' }}- Paste text (usePaste)
+        {{ '\n' }}- Click away / back (useFocus, useBlur) {{ '\n' }}- Select text with mouse
+        (useSelectionHandler) {{ '\n' }}- Resize terminal (useOnResize, useTerminalDimensions)
+        {{ '\n' }}- Press Ctrl+C to clear | ESC to exit
+      </text>
+    </box>
+  </box>
+
+  <box
+    [style]="{
+      border: true,
+      borderStyle: 'single',
+      borderColor: '#444',
+      marginTop: 1,
+      flexGrow: 1,
+    }"
+    title="Event Log"
+  >
+    <box [style]="{ flexDirection: 'column', padding: 1 }">
+      @if (events().length === 0) {
+        <text fg="#555">No events yet... try something!</text>
+      } @else {
+        @for (event of events(); track $index) {
+          <text [fg]="eventColor(event)">{{ event }}</text>
+        }
+      }
+    </box>
+  </box>
+</box>

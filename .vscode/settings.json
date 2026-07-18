@@ -1,0 +1,11 @@
+{
+    // Exclude from file watcher to improve performance
+    "files.watcherExclude": {
+        "**/opentui": true
+    },
+    // Ignore this sub-repo in Git source control view
+    "git.ignoredRepositories": [
+        "./lib/opentui",
+    ],
+    "html.customData": [".vscode/custom.html-data.json"]
+}

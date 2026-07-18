@@ -1,0 +1,76 @@
+{
+  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "test",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "base": "$ts-webpack",
+          "applyTo": "closedDocuments",
+          "fileLocation": [
+            "relative",
+            "${cwd}"
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": {
+              "regexp": "For help"
+            },
+            "endsPattern": {
+              "regexp": "For help"
+            }
+          }
+        }
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "start",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "start",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "base": "$ts-webpack",
+          "applyTo": "closedDocuments",
+          "fileLocation": [
+            "relative",
+            "${cwd}"
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": {
+              "regexp": "For help"
+            },
+            "endsPattern": {
+              "regexp": "For help"
+            }
+          }
+        }
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}

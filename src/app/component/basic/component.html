@@ -1,0 +1,58 @@
+<box [style]="{ padding: 2, flexDirection: 'column' }">
+  <text
+    content="OpenTUI with Angular!"
+    [style]="{
+      fg: '#FFFF00',
+      attributes: textAttr,
+    }"
+  />
+  <text [content]="styledText()" />
+
+  <box
+    title="Username"
+    [style]="{
+      border: true,
+      width: 40,
+      height: 3,
+      marginTop: 1,
+    }"
+  >
+    <input
+      placeholder="Enter your username..."
+      (onInput)="handleUsernameChange($any($event))"
+      (onSubmit)="handleSubmit()"
+      [focused]="focused() === 'username'"
+      [style]="{
+        focusedBackgroundColor: '#000000',
+      }"
+    />
+  </box>
+
+  <box
+    title="Password"
+    [style]="{
+      border: true,
+      width: 40,
+      height: 3,
+      marginTop: 1,
+      marginBottom: 1,
+    }"
+  >
+    <input
+      placeholder="Enter your password..."
+      (onInput)="handlePasswordChange($any($event))"
+      (onSubmit)="handleSubmit()"
+      [focused]="focused() === 'password'"
+      [style]="{
+        focusedBackgroundColor: '#000000',
+      }"
+    />
+  </box>
+
+  <text
+    [content]="status().toUpperCase()"
+    [style]="{
+      fg: status() === 'idle' ? '#AAAAAA' : status() === 'success' ? 'green' : 'red',
+    }"
+  />
+</box>
