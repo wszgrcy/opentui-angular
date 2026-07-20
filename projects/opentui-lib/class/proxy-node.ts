@@ -318,7 +318,7 @@ export class ProxyNodeContext {
     return null;
   }
   removeBeforeAdd(child: CommonNode | CommentNode) {
-    let parent = this.parentNode(child);
+    const parent = this.parentNode(child);
     if (isProxyNode(parent)) {
       parent.remove(child);
     } else if (!isCommentNode(child)) {

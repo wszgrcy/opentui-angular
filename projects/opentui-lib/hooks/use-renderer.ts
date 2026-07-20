@@ -1,5 +1,4 @@
-import { computed, Signal } from '@angular/core';
-import { CliRenderer } from '@opentui/core';
+import { computed } from '@angular/core';
 import { useAppContext } from '../contexts/app.context';
 
 export function useRenderer() {

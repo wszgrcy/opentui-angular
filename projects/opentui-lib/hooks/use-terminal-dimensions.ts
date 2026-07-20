@@ -1,4 +1,4 @@
-import { signal, Signal } from '@angular/core';
+import { signal } from '@angular/core';
 import { useRenderer } from './use-renderer';
 import { useOnResize } from './use-resize';
 

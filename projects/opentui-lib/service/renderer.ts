@@ -10,8 +10,6 @@ import {
   TabSelectRenderable,
   TabSelectRenderableEvents,
   TextareaRenderable,
-  RootTextNodeRenderable,
-  ScrollBoxRenderable,
 } from '@opentui/core';
 import { Instance, Type } from '../types/host';
 import { getComponentCatalogue, LinkRenderable } from '../components';

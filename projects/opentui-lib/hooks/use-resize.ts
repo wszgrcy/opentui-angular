@@ -1,4 +1,4 @@
-import { effect, Signal } from '@angular/core';
+import { effect } from '@angular/core';
 import { useRenderer } from './use-renderer';
 import { SignalOrValue, toValue } from '../utils/to-value';
 

@@ -43,4 +43,4 @@ export type {
   HostContext,
 } from './types/host';
 export * from './plugins/slot';
-export * from './utils'
+export * from './utils';

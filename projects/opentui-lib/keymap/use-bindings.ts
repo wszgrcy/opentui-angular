@@ -1,4 +1,4 @@
-import { effect, computed, DestroyRef, inject, afterEveryRender } from '@angular/core';
+import { computed, DestroyRef, inject, afterEveryRender } from '@angular/core';
 import type { KeyEvent, Renderable } from '@opentui/core';
 import { useKeymap } from './use-keymap';
 import { Layer, TargetMode } from '@opentui/keymap';
