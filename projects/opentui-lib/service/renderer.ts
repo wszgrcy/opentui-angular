@@ -69,12 +69,8 @@ export class TerminalRenderer implements Renderer2 {
       if (isProxyNode(child)) {
         child.linkContainer(parent);
       } else {
-        const maybeParentProxy = this.nodeContext.parentNode(child);
-        if (isProxyNode(maybeParentProxy)) {
-          maybeParentProxy.remove(child);
-        } else if (!isCommentNode(child)) {
-          child.parent?.remove(child);
-        }
+        this.nodeContext.removeBeforeAdd(child);
+
         if (!isCommentNode(child)) {
           parent.add(child);
         }
@@ -138,12 +134,8 @@ export class TerminalRenderer implements Renderer2 {
       if (isProxyNode(newChild)) {
         newChild.linkContainer(parent, refChild ?? undefined);
       } else {
-        const oldParent = this.nodeContext.parentNode(newChild);
-        if (isProxyNode(oldParent)) {
-          oldParent.remove(newChild);
-        } else if (!isCommentNode(newChild)) {
-          newChild.parent?.remove(newChild);
-        }
+        this.nodeContext.removeBeforeAdd(newChild);
+
         if (isProxyNode(refChild)) {
           if (!isCommentNode(newChild)) {
             insertChildToContainer(parent, newChild, refChild.getAnchor(0));

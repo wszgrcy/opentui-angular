@@ -156,12 +156,8 @@ export class ProxyNode {
   }
 
   appendChild(newChild: CommonNode | CommentNode, refChild?: ChildNode | null) {
-    const oldParent = this.context.parentNode(newChild);
-    if (isProxyNode(oldParent)) {
-      oldParent.remove(newChild);
-    } else if (!isCommentNode(newChild)) {
-      newChild.parent?.remove(newChild);
-    }
+    this.context.removeBeforeAdd(newChild);
+
     let index;
     if (refChild) {
       index = this.children.indexOf(refChild);
@@ -320,5 +316,13 @@ export class ProxyNodeContext {
       }
     }
     return null;
+  }
+  removeBeforeAdd(child: CommonNode | CommentNode) {
+    let parent = this.parentNode(child);
+    if (isProxyNode(parent)) {
+      parent.remove(child);
+    } else if (!isCommentNode(child)) {
+      child.parent?.remove(child);
+    }
   }
 }
