@@ -1,4 +1,4 @@
-import { TextRenderable } from '@opentui/core';
+import { RootTextNodeRenderable, ScrollBoxRenderable, TextRenderable } from '@opentui/core';
 import { Container, Instance } from '../types/host';
 
 export type CommonNode = Instance;
@@ -156,9 +156,11 @@ export class ProxyNode {
   }
 
   appendChild(newChild: CommonNode | CommentNode, refChild?: ChildNode | null) {
-    const oldParent = this.context.findDescendantParent(newChild);
-    if (oldParent) {
+    const oldParent = this.context.parentNode(newChild);
+    if (isProxyNode(oldParent)) {
       oldParent.remove(newChild);
+    } else if (!isCommentNode(newChild)) {
+      newChild.parent?.remove(newChild);
     }
     let index;
     if (refChild) {
@@ -271,7 +273,7 @@ export class ProxyNodeContext {
 
     this.boxMap.set(parent, instance);
   }
-  findDescendantParent(node: CommonNode | CommentNode): ProxyNode | null {
+  parentNode(node: ChildNode) {
     const maybeParent = node.parent;
     if (!maybeParent) {
       return null;
@@ -279,21 +281,34 @@ export class ProxyNodeContext {
     if (isProxyNode(maybeParent)) {
       return maybeParent;
     }
-    const ctx = this.boxMap.get(maybeParent);
+    let returnParent = maybeParent;
+    if (returnParent instanceof RootTextNodeRenderable) {
+      returnParent = returnParent.textParent ?? undefined;
+    }
+
+    const scrollBoxCandidate = returnParent?.parent?.parent?.parent;
+    if (
+      scrollBoxCandidate instanceof ScrollBoxRenderable &&
+      scrollBoxCandidate.content === returnParent
+    ) {
+      returnParent = scrollBoxCandidate;
+    }
+    const ctx = this.boxMap.get(returnParent);
     if (!ctx) {
       return null;
     }
-    return this._findInRealList(ctx.realList, node, null);
+
+    return this._findInRealList(ctx.realList, node, returnParent);
   }
 
   private _findInRealList(
     realList: ChildNode[],
-    node: CommonNode | CommentNode,
-    currentProxy: ProxyNode | null,
-  ): ProxyNode | null {
+    node: ChildNode,
+    returnParent: ProxyNode | CommonNode | null,
+  ): ProxyNode | CommonNode | null {
     for (const item of realList) {
       if (item === node) {
-        return currentProxy;
+        return returnParent;
       }
     }
     for (const item of realList) {

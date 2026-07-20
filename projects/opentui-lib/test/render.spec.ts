@@ -644,4 +644,28 @@ describe('Renderer', () => {
     const frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('hello');
   });
+  it('component->if', async () => {
+    @Component({
+      selector: 'test-child2',
+      template: `@if (1) {
+        <text>hello</text>
+      } `,
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+    class Child2 {}
+
+    @Component({
+      template: `<test-child2></test-child2>`,
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [Child2],
+    })
+    class TestComponent {}
+    const { testSetup, fixture } = await testRender(TestComponent, {
+      width: 50,
+      height: 5,
+    });
+    await testSetup.renderOnce();
+    const frame = testSetup.captureCharFrame();
+    expect(frame.trim()).deep.eq('hello');
+  });
 });

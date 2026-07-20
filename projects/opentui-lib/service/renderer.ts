@@ -69,9 +69,11 @@ export class TerminalRenderer implements Renderer2 {
       if (isProxyNode(child)) {
         child.linkContainer(parent);
       } else {
-        const maybeParentProxy = this.nodeContext.findDescendantParent(child);
-        if (maybeParentProxy) {
+        const maybeParentProxy = this.nodeContext.parentNode(child);
+        if (isProxyNode(maybeParentProxy)) {
           maybeParentProxy.remove(child);
+        } else if (!isCommentNode(child)) {
+          child.parent?.remove(child);
         }
         if (!isCommentNode(child)) {
           parent.add(child);
@@ -93,7 +95,7 @@ export class TerminalRenderer implements Renderer2 {
         this.nodeContext.removeChild(child.parent!, child);
         return;
       } else {
-        container = this.nodeContext.findDescendantParent(child) ?? this.parentNode(child)!;
+        container = this.parentNode(child)!;
       }
     }
     if (!container) {
@@ -136,9 +138,11 @@ export class TerminalRenderer implements Renderer2 {
       if (isProxyNode(newChild)) {
         newChild.linkContainer(parent, refChild ?? undefined);
       } else {
-        const maybeParentProxy = this.nodeContext.findDescendantParent(newChild);
-        if (maybeParentProxy) {
-          maybeParentProxy.remove(newChild);
+        const oldParent = this.nodeContext.parentNode(newChild);
+        if (isProxyNode(oldParent)) {
+          oldParent.remove(newChild);
+        } else if (!isCommentNode(newChild)) {
+          newChild.parent?.remove(newChild);
         }
         if (isProxyNode(refChild)) {
           if (!isCommentNode(newChild)) {
@@ -183,22 +187,7 @@ export class TerminalRenderer implements Renderer2 {
     return new CommentNode(value);
   }
   parentNode(node: ChildNode) {
-    let parent = node.parent;
-    if (isProxyNode(parent)) {
-      return parent;
-    }
-    if (parent instanceof RootTextNodeRenderable) {
-      parent = parent.textParent ?? undefined;
-    }
-
-    const scrollBoxCandidate = parent?.parent?.parent?.parent;
-    if (
-      scrollBoxCandidate instanceof ScrollBoxRenderable &&
-      scrollBoxCandidate.content === parent
-    ) {
-      parent = scrollBoxCandidate;
-    }
-    return parent;
+    return this.nodeContext.parentNode(node);
   }
   setProperty(target: any, name: string, value: any): void {
     this.setPropertyInternal(target, name, value);
