@@ -206,7 +206,11 @@ export class TerminalRenderer implements Renderer2 {
         break;
     }
 
-    (target as any)[name] = value;
+    if (isProxyNode(target)) {
+      target.properties[name] = value;
+    } else {
+      (target as any)[name] = value;
+    }
   }
 
   setStyle(el: any, style: string, value: any, flags?: unknown): void {

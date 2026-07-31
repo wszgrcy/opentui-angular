@@ -63,6 +63,7 @@ export class ProxyNode {
   parentProxy: ProxyNode | undefined = undefined;
   context;
   children: ChildNode[] = [];
+  properties: Record<string, any> = {};
   get parent(): ProxyNode | ContainerNode | null {
     return this.parentProxy ?? this.#parentContainer ?? null;
   }
