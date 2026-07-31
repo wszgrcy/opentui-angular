@@ -44,3 +44,5 @@ export type {
 } from './types/host';
 export * from './plugins/slot';
 export * from './utils';
+
+export { ProxyNode } from './class/proxy-node';
