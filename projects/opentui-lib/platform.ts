@@ -113,86 +113,6 @@ class TPlatformLocation implements PlatformLocation {
   }
 }
 
-/** Approximates one display frame; Node has no `requestAnimationFrame` of its own. */
-const FRAME_INTERVAL_MS = 16;
-
-export interface FrameScheduler {
-  requestAnimationFrame(callback: FrameRequestCallback): number;
-  cancelAnimationFrame(handle: number): void;
-}
-
-function createTimerFrameScheduler(): FrameScheduler {
-  const handles = new Map<number, ReturnType<typeof setTimeout>>();
-  let nextHandle = 1;
-  return {
-    requestAnimationFrame(callback: FrameRequestCallback): number {
-      const handle = nextHandle++;
-      handles.set(
-        handle,
-        setTimeout(() => {
-          handles.delete(handle);
-          callback(Date.now());
-        }, FRAME_INTERVAL_MS),
-      );
-      return handle;
-    },
-    cancelAnimationFrame(handle: number): void {
-      const timer = handles.get(handle);
-      if (timer === undefined) return;
-      handles.delete(handle);
-      clearTimeout(timer);
-    },
-  };
-}
-
-/**
- * Moves the hand-off to a renderer frame out of the caller's turn, so change detection never runs inside the
- * render loop it is asking to redraw.
- */
-function deferFrameScheduler(scheduler: FrameScheduler): FrameScheduler {
-  const timers = new Map<number, ReturnType<typeof setTimeout>>();
-  let nextHandle = 1;
-  return {
-    requestAnimationFrame(callback: FrameRequestCallback): number {
-      const handle = nextHandle++;
-      timers.set(
-        handle,
-        setTimeout(() => {
-          timers.delete(handle);
-          scheduler.requestAnimationFrame(callback);
-        }),
-      );
-      return handle;
-    },
-    cancelAnimationFrame(handle: number): void {
-      const timer = timers.get(handle);
-      if (timer === undefined) {
-        scheduler.cancelAnimationFrame(handle);
-        return;
-      }
-      timers.delete(handle);
-      clearTimeout(timer);
-    },
-  };
-}
-
-let frameScheduler: FrameScheduler = createTimerFrameScheduler();
-
-/**
- * Runs Angular's frame callbacks on the renderer's own frames instead of on a timer. `@opentui/core` used to
- * install a global `requestAnimationFrame` for every consumer; since 0.5 the renderer only exposes the instance
- * methods, so the adapter wires them up itself. Until this runs the timer-backed scheduler stands in.
- */
-export function bindFrameScheduler(scheduler: FrameScheduler): void {
-  frameScheduler = deferFrameScheduler(scheduler);
-}
-
-function installGlobalFrameScheduler(): void {
-  globalThis.requestAnimationFrame = (callback: FrameRequestCallback) =>
-    frameScheduler.requestAnimationFrame(callback);
-  globalThis.cancelAnimationFrame = (handle: number) => frameScheduler.cancelAnimationFrame(handle);
-}
-
 export function provideOpentuiPlatformProviders() {
   return [
     { provide: PLATFORM_ID, useValue: 'opentui' },
@@ -200,7 +120,6 @@ export function provideOpentuiPlatformProviders() {
     providePlatformInitializer(() => {
       ɵsetDocument(doc as any);
       ɵsetRootDomAdapter(new TDomAdapter());
-      installGlobalFrameScheduler();
     }),
   ];
 }
