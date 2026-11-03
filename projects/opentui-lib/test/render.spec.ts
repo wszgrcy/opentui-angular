@@ -67,8 +67,8 @@ describe('Renderer', () => {
     expect(frame.trim()).eq('hello');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).eq('');
   });
@@ -97,8 +97,8 @@ describe('Renderer', () => {
     ).deep.eq(['hello', 'world']);
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).eq('world');
   });
@@ -134,8 +134,8 @@ describe('Renderer', () => {
     ).deep.eq(['hello', 'world']);
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(
       frame
@@ -216,8 +216,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('hello');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('world');
   });
@@ -255,8 +255,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firsthellolast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firstworldlast');
   });
@@ -294,8 +294,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firstworldlast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firsthellolast');
   });
@@ -328,8 +328,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firsthellolast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firstworldlast');
   });
@@ -362,8 +362,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firstworldlast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firsthellolast');
   });
@@ -389,8 +389,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('1');
     fixture.componentInstance.list.set([]);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('');
   });
@@ -429,8 +429,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firstworldlast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firsthellolast');
   });
@@ -464,8 +464,8 @@ describe('Renderer', () => {
     expect(frame.trim()).deep.eq('firstworldlast');
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
-    await new Promise((res) => setTimeout(res));
     await fixture.whenStable();
+    await testSetup.renderOnce();
     frame = testSetup.captureCharFrame();
     expect(frame.trim()).deep.eq('firsthellolast');
   });

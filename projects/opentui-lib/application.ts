@@ -7,7 +7,11 @@ import {
   provideAppInitializer,
 } from '@angular/core';
 import { BootstrapContext } from '@angular/platform-browser';
-import { provideAppProviders, provideOpentuiPlatformProviders } from './platform';
+import {
+  provideAppProviders,
+  provideOpentuiPlatformProviders,
+  bindFrameScheduler,
+} from './platform';
 import { APP_CONTEXT_TOKEN, AppContextValue } from './contexts/app.context';
 import { CliRendererToken } from './token/cli-render.token';
 import { engine } from '@opentui/core';
@@ -36,6 +40,7 @@ export async function bootstrapApplication(
       provideAppInitializer(() => {
         const cliRenderer = inject(CliRendererToken);
         engine.attach(cliRenderer);
+        bindFrameScheduler(cliRenderer);
       }),
     ],
     platformProviders: provideOpentuiPlatformProviders(),

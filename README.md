@@ -24,6 +24,7 @@ An Angular renderer based on [OpenTUI core](https://github.com/anomalyco/opentui
     - [useOnResize(callback)](#useonresizecallback)
     - [useTerminalDimensions()](#useterminaldimensions)
     - [useTimeline(options?)](#usetimelineoptions)
+    - [useAnimationTick(fps, callback, options?)](#useanimationtickfps-callback-options)
 - [Components](#components)
   - [Layout and Display Components](#layout-and-display-components)
     - [Text Component](#text-component)
@@ -38,6 +39,9 @@ An Angular renderer based on [OpenTUI core](https://github.com/anomalyco/opentui
     - [Code Component](#code-component)
     - [Line Number Component](#line-number-component)
     - [Diff Component](#diff-component)
+  - [Media Components](#media-components)
+    - [Image Component](#image-component)
+    - [Video Component](#video-component)
 - [Examples](#examples)
   - [Login Form](#login-form)
   - [Counter with Timer](#counter-with-timer)
@@ -394,6 +398,42 @@ export class App {
 - `pause()`: Pause the timeline
 - `restart()`: Restart the timeline from the beginning
 
+#### `useAnimationTick(fps, callback, options?)`
+
+Run `callback` on the renderer's shared animation clock. Pass a signal as the rate to change speed without
+re-subscribing, and `undefined` to pause it.
+
+```ts
+import { Component, NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { useAnimationTick } from '@cyia/opentui-angular';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<text>frame: {{ frames() }}</text>`,
+})
+export class App {
+  protected readonly frames = signal(0);
+  protected readonly running = signal(true);
+
+  constructor() {
+    useAnimationTick(
+      computed(() => (this.running() ? 30 : undefined)),
+      (deltaTime) => {
+        this.frames.update((value) => value + 1);
+      },
+    );
+  }
+}
+```
+
+**Parameters:**
+
+- `fps`: Frames per second, or `undefined` to stop ticking. Accepts a signal.
+- `callback`: Called with `(deltaTime, ticks, time)` on every tick. Accepts a signal.
+- `options?`: `AnimationTickOptions` passed through to the renderer, such as `tolerance`.
+
 ## Components
 
 ### Layout and Display Components
@@ -637,6 +677,56 @@ export class App implements AfterViewInit {
 #### Diff Component
 
 Displays a diff in unified or split view, with syntax highlighting, customizable themes, and line number support. Supports multiple view modes (unified/split), word wrap, and theme customization.
+
+### Media Components
+
+#### Image Component
+
+Draws an image with the terminal's image protocol. `source` accepts a path, a URL, or raw pixel data.
+
+```ts
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<image [source]="'./logo.png'" [width]="24" [height]="12" fit="cover"></image>`,
+})
+export class App {}
+```
+
+**Properties:**
+
+- `source`: Image path, URL, `Uint8Array`, `ArrayBuffer`, `Blob`, or `Response`
+- `fit`: How the image fills the box: `fit` (default), `cover`, or `fill`
+- `crop`: Region of the source to show, in source pixels
+- `protocol`: Force an image protocol instead of picking the best one the terminal supports
+- `onLoad` / `onError`: Load callbacks
+
+#### Video Component
+
+Plays an MP4 (H.264/AAC) file. Decoding and the media clock stay native, so the component only forwards controls.
+
+```ts
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<video [source]="'./clip.mp4'" [width]="40" [height]="20" [loop]="true" [muted]="true"></video>`,
+})
+export class App {}
+```
+
+**Properties:**
+
+- `source`: Path of an MP4 file
+- `fit` / `crop`: Same as the image component
+- `autoplay` / `loop` / `muted` / `volume` / `audio`: Playback controls
+- `maxFps`: Upper bound of the presentation rate, 1 to 120 (default: 30)
+- `onReady` / `onError` / `onEnd` / `onPlay` / `onPause` / `onSeek` / `onTimeUpdate`: Playback events
 
 ## Examples
 

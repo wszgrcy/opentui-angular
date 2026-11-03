@@ -12,19 +12,6 @@ export async function testRender<T>(Component: Type<T>, testRendererOptions: Tes
       testRendererOptions.onDestroy?.();
     },
   });
-  const oldRaf = global.requestAnimationFrame;
-  let index = 0;
-  const animationRequest = new Map<number, NodeJS.Timeout>();
-  global.requestAnimationFrame = (callback: FrameRequestCallback) => {
-    const timeout = setTimeout(() => {
-      oldRaf(callback);
-    });
-    animationRequest.set(index++, timeout);
-    return index;
-  };
-  global.cancelAnimationFrame = (input: number) => {
-    clearTimeout(animationRequest.get(input));
-  };
   TestBed.configureTestingModule({
     imports: [Component],
     providers: [
@@ -47,6 +34,8 @@ export async function testRender<T>(Component: Type<T>, testRendererOptions: Tes
   const fixture = TestBed.createComponent(Component);
   await fixture.whenStable();
   fixture.detectChanges();
+  // The native session paints its first frame asynchronously; capturing before it lands reads an untouched buffer.
+  await testSetup.renderOnce();
   fixture.componentRef.onDestroy(() => {
     testSetup.renderer.destroy();
   });

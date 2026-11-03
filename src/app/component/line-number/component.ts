@@ -1,5 +1,14 @@
-import { Component, ElementRef, NO_ERRORS_SCHEMA, effect, signal, viewChild } from '@angular/core';
-import { useKeyboard } from '@cyia/opentui-angular';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  NO_ERRORS_SCHEMA,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { useKeyboard, useRenderer } from '@cyia/opentui-angular';
 import { LineNumberRenderable, RGBA, SyntaxStyle } from '@opentui/core';
 
 const codeContent = `function fibonacci(n: number): number {
@@ -20,7 +29,7 @@ console.log('Sum:', sum)
 const evens = results.filter(n => n % 2 === 0)
 console.log('Even numbers:', evens)`;
 
-const syntaxStyle = SyntaxStyle.fromStyles({
+const syntaxStyleStyles = {
   keyword: { fg: RGBA.fromHex('#C792EA') },
   function: { fg: RGBA.fromHex('#82AAFF') },
   string: { fg: RGBA.fromHex('#C3E88D') },
@@ -30,7 +39,7 @@ const syntaxStyle = SyntaxStyle.fromStyles({
   operator: { fg: RGBA.fromHex('#89DDFF') },
   variable: { fg: RGBA.fromHex('#EEFFFF') },
   default: { fg: RGBA.fromHex('#A6ACCD') },
-});
+};
 
 @Component({
   selector: 'app-line-number',
@@ -44,9 +53,16 @@ export class LineNumberComponent {
   protected showDiagnostics = signal(false);
 
   protected readonly codeContent = codeContent;
-  protected readonly syntaxStyle = syntaxStyle;
+  private readonly renderer = useRenderer();
+  // A SyntaxStyle owns native state, so it is built from the renderer's scene and freed with the component.
+  protected readonly syntaxStyle = SyntaxStyle.fromStyles(
+    syntaxStyleStyles,
+    this.renderer().nativeScene,
+  );
   lineNumberRef = viewChild.required<ElementRef<LineNumberRenderable>>('lineNumberRef');
   constructor() {
+    inject(DestroyRef).onDestroy(() => this.syntaxStyle.destroy());
+
     effect(() => {
       const ref = this.lineNumberRef().nativeElement;
       // Set up diff highlights

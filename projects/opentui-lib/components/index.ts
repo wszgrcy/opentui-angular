@@ -3,6 +3,7 @@ import {
   BoxRenderable,
   CodeRenderable,
   DiffRenderable,
+  ImageRenderable,
   InputRenderable,
   LineNumberRenderable,
   MarkdownRenderable,
@@ -12,6 +13,7 @@ import {
   TextareaRenderable,
   TextRenderable,
   TimeToFirstDrawRenderable,
+  VideoRenderable,
 } from '@opentui/core';
 import {
   BoldSpanRenderable,
@@ -45,6 +47,8 @@ export const baseComponents = {
   'ascii-font': ASCIIFontRenderable,
   'tab-select': TabSelectRenderable,
   'line-number': LineNumberRenderable,
+  image: ImageRenderable,
+  video: VideoRenderable,
 
   // Text modifiers
   span: SpanRenderable,

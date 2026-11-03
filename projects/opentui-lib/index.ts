@@ -24,6 +24,7 @@ export {
   useSelectionHandler,
   useTerminalDimensions,
   useTimeline,
+  useAnimationTick,
 } from './hooks';
 
 export { createAngularSlotRegistry } from './plugins/slot';

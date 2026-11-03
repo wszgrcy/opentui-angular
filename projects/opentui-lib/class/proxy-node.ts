@@ -1,4 +1,4 @@
-import { RootTextNodeRenderable, ScrollBoxRenderable, TextRenderable } from '@opentui/core';
+import { RootTextNodeRenderable, TextRenderable } from '@opentui/core';
 import { Container, Instance } from '../types/host';
 
 export type CommonNode = Instance;
@@ -283,13 +283,6 @@ export class ProxyNodeContext {
       returnParent = returnParent.textParent ?? undefined;
     }
 
-    const scrollBoxCandidate = returnParent?.parent?.parent?.parent;
-    if (
-      scrollBoxCandidate instanceof ScrollBoxRenderable &&
-      scrollBoxCandidate.content === returnParent
-    ) {
-      returnParent = scrollBoxCandidate;
-    }
     const ctx = this.boxMap.get(returnParent);
     if (!ctx) {
       return null;

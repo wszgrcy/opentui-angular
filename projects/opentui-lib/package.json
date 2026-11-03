@@ -1,10 +1,11 @@
 {
   "name": "@cyia/opentui-angular",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
-    "@opentui/core": "^0.4.5"
+    "@opentui/core": "^0.8.1",
+    "@opentui/keymap": "^0.8.1"
   },
   "dependencies": {
     "tslib": "^2.3.0"

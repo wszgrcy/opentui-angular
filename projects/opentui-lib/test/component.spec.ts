@@ -27,7 +27,7 @@ describe('component', () => {
     const { testSetup, fixture } = await testRender(C1Component, { width: 20, height: 5 });
     expect(fixture.elementRef).ok;
 
-    let comp = fixture.componentInstance.at();
+    const comp = fixture.componentInstance.at();
     expect(comp.el.nativeElement.properties).deep.eq({ fg: '#FFFF00' });
   });
 });
