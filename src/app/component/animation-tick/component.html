@@ -1,0 +1,31 @@
+<box
+  title="Animation Tick"
+  [style]="{
+    margin: 1,
+    padding: 1,
+    border: true,
+    borderStyle: 'single',
+    borderColor: '#4a4a4a',
+  }"
+>
+  <box flexDirection="row" justifyContent="space-between">
+    <text fg="#82aaff">Rate: {{ rateLabel() }}{{ running() ? '' : ' (paused)' }}</text>
+    <text fg="#c3e88d">Ticks: {{ ticks() }}</text>
+  </box>
+  <box flexDirection="row" justifyContent="space-between">
+    <text fg="#546e7a">Elapsed: {{ elapsed() }} ms</text>
+    <text fg="#546e7a">deltaTime drives the bar</text>
+  </box>
+  <box [style]="{ marginTop: 1, backgroundColor: '#16161e' }">
+    <box [style]="{ width: bar().length, backgroundColor: '#7aa2f7' }">
+      <text>{{ bar() }}</text>
+    </box>
+  </box>
+  <text [style]="{ marginTop: 1 }" fg="#bb9af7">
+    Rates:
+    @for (rate of rates; track rate; let i = $index) {
+      {{ i === rateIndex() ? '[' + rate + ']' : ' ' + rate + ' ' }}
+    }
+  </text>
+</box>
+<text fg="#565f89">space: pause/resume | up/down: rate | ctrl+c: quit</text>

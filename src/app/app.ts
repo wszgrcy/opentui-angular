@@ -3,6 +3,7 @@ import { useRenderer, useKeyboard, useTerminalDimensions } from '@cyia/opentui-a
 import { BasicComponent } from './component/basic/component';
 import { CounterComponent } from './component/counter/component';
 import { AnimationComponent } from './component/animation/component';
+import { AnimationTickComponent } from './component/animation-tick/component';
 import { AsciiComponent } from './component/ascii/component';
 import { TextComponent } from './component/text/component';
 import { BoxComponent } from './component/box/component';
@@ -39,6 +40,11 @@ export const EXAMPLES: ExampleDefinition[] = [
     name: 'Animation Demo',
     description: 'Timeline-driven system monitor animation',
     component: AnimationComponent,
+  },
+  {
+    name: 'Animation Tick Demo',
+    description: 'useAnimationTick drives a bar on the renderer animation clock',
+    component: AnimationTickComponent,
   },
   {
     name: 'ASCII Font Demo',

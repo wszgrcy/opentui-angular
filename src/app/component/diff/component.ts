@@ -1,5 +1,5 @@
-import { Component, NO_ERRORS_SCHEMA, computed, signal } from '@angular/core';
-import { useKeyboard } from '@cyia/opentui-angular';
+import { Component, DestroyRef, NO_ERRORS_SCHEMA, computed, inject, signal } from '@angular/core';
+import { useKeyboard, useRenderer } from '@cyia/opentui-angular';
 import { parseColor, SyntaxStyle } from '@opentui/core';
 
 interface DiffTheme {
@@ -171,9 +171,26 @@ export class DiffComponent {
 
   protected themeName = computed(() => this.theme().name);
 
-  protected syntaxStyle = computed(() => SyntaxStyle.fromStyles(this.theme().syntaxStyle));
+  private readonly renderer = useRenderer();
+  // A SyntaxStyle owns native state, so one is built per theme at most and all of them go with the component.
+  private readonly syntaxStyleCache = new Map<string, SyntaxStyle>();
+
+  protected syntaxStyle = computed(() => {
+    const theme = this.theme();
+    const cached = this.syntaxStyleCache.get(theme.name);
+    if (cached) return cached;
+    const style = SyntaxStyle.fromStyles(theme.syntaxStyle, this.renderer().nativeScene);
+    this.syntaxStyleCache.set(theme.name, style);
+    return style;
+  });
 
   constructor() {
+    inject(DestroyRef).onDestroy(() => {
+      for (const style of this.syntaxStyleCache.values()) {
+        style.destroy();
+      }
+      this.syntaxStyleCache.clear();
+    });
     useKeyboard((key) => {
       if (key.raw === '?') {
         this.showHelp.update((v) => !v);

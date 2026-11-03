@@ -7,5 +7,12 @@
     "git.ignoredRepositories": [
         "./lib/opentui",
     ],
-    "html.customData": [".vscode/custom.html-data.json"]
+    "html.customData": [
+        ".vscode/custom.html-data.json"
+    ],
+    "debug.javascript.terminalOptions": {
+        "sourceMapPathOverrides": {
+            "*": "${workspaceFolder}/*"
+        }
+    }
 }

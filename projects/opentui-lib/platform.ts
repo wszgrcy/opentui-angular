@@ -120,20 +120,6 @@ export function provideOpentuiPlatformProviders() {
     providePlatformInitializer(() => {
       ɵsetDocument(doc as any);
       ɵsetRootDomAdapter(new TDomAdapter());
-      // temp fix
-      const oldRaf = global.requestAnimationFrame;
-      let index = 0;
-      const animationRequest = new Map<number, NodeJS.Timeout>();
-      global.requestAnimationFrame = (callback: FrameRequestCallback) => {
-        const timeout = setTimeout(() => {
-          oldRaf(callback);
-        });
-        animationRequest.set(index++, timeout);
-        return index;
-      };
-      global.cancelAnimationFrame = (input: number) => {
-        clearTimeout(animationRequest.get(input));
-      };
     }),
   ];
 }

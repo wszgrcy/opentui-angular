@@ -24,6 +24,7 @@
     - [useOnResize(callback)](#useonresizecallback)
     - [useTerminalDimensions()](#useterminaldimensions)
     - [useTimeline(options?)](#usetimelineoptions)
+    - [useAnimationTick(fps, callback, options?)](#useanimationtickfps-callback-options)
 - [组件](#组件)
   - [布局与显示组件](#布局与显示组件)
     - [Text 组件](#text-组件)
@@ -38,6 +39,9 @@
     - [Code 组件](#code-组件)
     - [Line Number 组件](#line-number-组件)
     - [Diff 组件](#diff-组件)
+  - [媒体组件](#媒体组件)
+    - [Image 组件](#image-组件)
+    - [Video 组件](#video-组件)
 - [示例](#示例)
   - [登录表单](#登录表单)
   - [带定时器的计数器](#带定时器的计数器)
@@ -394,6 +398,41 @@ export class App {
 - `pause()`: 暂停时间线
 - `restart()`: 从头重新启动时间线
 
+#### `useAnimationTick(fps, callback, options?)`
+
+在渲染器共享的动画时钟上执行 `callback`。传入 signal 作为速率，可以在不重新订阅的情况下改变速度；传入 `undefined` 则暂停。
+
+```ts
+import { Component, NO_ERRORS_SCHEMA, computed, signal } from '@angular/core';
+import { useAnimationTick } from '@cyia/opentui-angular';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<text>frame: {{ frames() }}</text>`,
+})
+export class App {
+  protected readonly frames = signal(0);
+  protected readonly running = signal(true);
+
+  constructor() {
+    useAnimationTick(
+      computed(() => (this.running() ? 30 : undefined)),
+      (deltaTime) => {
+        this.frames.update((value) => value + 1);
+      },
+    );
+  }
+}
+```
+
+**参数：**
+
+- `fps`: 每秒帧数，传 `undefined` 停止。可以是 signal。
+- `callback`: 每次 tick 以 `(deltaTime, ticks, time)` 调用。可以是 signal。
+- `options?`: 传递给渲染器的 `AnimationTickOptions`，例如 `tolerance`。
+
 ## 组件
 
 ### 布局与显示组件
@@ -637,6 +676,56 @@ export class App implements AfterViewInit {
 #### Diff 组件
 
 显示统一或分栏视图的 diff，带语法高亮、可自定义的主题和行号支持。支持多种视图模式（统一/分栏）、单词换行和主题自定义。
+
+### 媒体组件
+
+#### Image 组件
+
+使用终端的图片协议绘制图片。`source` 接受路径、URL 或原始像素数据。
+
+```ts
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<image [source]="'./logo.png'" [width]="24" [height]="12" fit="cover"></image>`,
+})
+export class App {}
+```
+
+**属性：**
+
+- `source`: 图片路径、URL、`Uint8Array`、`ArrayBuffer`、`Blob` 或 `Response`
+- `fit`: 图片填充方式：`fit`（默认）、`cover`、`fill`
+- `crop`: 以源像素为单位，只显示源的某个区域
+- `protocol`: 强制使用某个图片协议，而不是自动选择终端支持的最佳协议
+- `onLoad` / `onError`: 加载回调
+
+#### Video 组件
+
+播放 MP4（H.264/AAC）文件。解码和媒体时钟都在原生侧，组件只转发控制命令。
+
+```ts
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  schemas: [NO_ERRORS_SCHEMA],
+  template: `<video [source]="'./clip.mp4'" [width]="40" [height]="20" [loop]="true" [muted]="true"></video>`,
+})
+export class App {}
+```
+
+**属性：**
+
+- `source`: MP4 文件路径
+- `fit` / `crop`: 与 Image 组件相同
+- `autoplay` / `loop` / `muted` / `volume` / `audio`: 播放控制
+- `maxFps`: 展示帧率上限，1 到 120（默认：30）
+- `onReady` / `onError` / `onEnd` / `onPlay` / `onPause` / `onSeek` / `onTimeUpdate`: 播放事件
 
 ## 示例
 

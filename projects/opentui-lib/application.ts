@@ -34,8 +34,7 @@ export async function bootstrapApplication(
         },
       },
       provideAppInitializer(() => {
-        const cliRenderer = inject(CliRendererToken);
-        engine.attach(cliRenderer);
+        engine.attach(inject(CliRendererToken));
       }),
     ],
     platformProviders: provideOpentuiPlatformProviders(),

@@ -7,3 +7,4 @@ export * from './use-resize';
 export * from './use-selection';
 export * from './use-terminal-dimensions';
 export * from './use-timeline';
+export * from './use-animation-tick';
